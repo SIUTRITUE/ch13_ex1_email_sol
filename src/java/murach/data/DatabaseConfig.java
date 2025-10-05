@@ -27,14 +27,18 @@ public class DatabaseConfig {
                     properties.put("jakarta.persistence.jdbc.url", jdbcUrl);
                     properties.put("jakarta.persistence.jdbc.user", dbUser != null ? dbUser : "root");
                     properties.put("jakarta.persistence.jdbc.password", dbPassword != null ? dbPassword : "");
-                    System.out.println("Using production database: " + jdbcUrl);
+                    properties.put("jakarta.persistence.jdbc.driver", "com.mysql.cj.jdbc.Driver");
+                    System.out.println("Using production MySQL database: " + jdbcUrl);
                 } else {
-                    // Use default local settings (already in persistence.xml)
-                    System.out.println("Using local database configuration");
+                    // For demo/development, use H2 in-memory database
+                    properties.put("jakarta.persistence.jdbc.url", "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1");
+                    properties.put("jakarta.persistence.jdbc.user", "sa");
+                    properties.put("jakarta.persistence.jdbc.password", "");
+                    properties.put("jakarta.persistence.jdbc.driver", "org.h2.Driver");
+                    System.out.println("Using H2 in-memory database for demo");
                 }
                 
-                // Common properties
-                properties.put("jakarta.persistence.jdbc.driver", "com.mysql.cj.jdbc.Driver");
+                // Common properties (driver is set above)
                 properties.put("jakarta.persistence.schema-generation.database.action", "create");
                 properties.put("eclipselink.logging.level", "FINE");
                 properties.put("eclipselink.ddl-generation", "create-or-extend-tables");
